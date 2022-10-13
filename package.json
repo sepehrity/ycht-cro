@@ -26,7 +26,7 @@
   "scripts": {
     "cra-start": "react-scripts start",
     "start": "parcel",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "clean": "rimraf ./dist",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
