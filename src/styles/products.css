@@ -95,10 +95,6 @@ a {
   cursor: pointer;
   text-decoration: none;
 }
-a:hover {
-  color: #002a4d;
-  text-decoration: underline;
-}
 a:focus {
   outline: 0;
 }
@@ -659,72 +655,6 @@ a:focus {
   to {
     transform: rotate(360deg);
   }
-}
-@font-face {
-  font-family: eurostile;
-  src: url(https://use.typekit.net/af/e90c07/000000000000000000017994/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("woff2"),
-    url(https://use.typekit.net/af/e90c07/000000000000000000017994/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("woff"),
-    url(https://use.typekit.net/af/e90c07/000000000000000000017994/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("opentype");
-  font-style: normal;
-  font-weight: 400;
-}
-@font-face {
-  font-family: eurostile;
-  src: url(https://use.typekit.net/af/b30e05/000000000000000000017997/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3)
-      format("woff2"),
-    url(https://use.typekit.net/af/b30e05/000000000000000000017997/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3)
-      format("woff"),
-    url(https://use.typekit.net/af/b30e05/000000000000000000017997/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3)
-      format("opentype");
-  font-style: normal;
-  font-weight: 700;
-}
-@font-face {
-  font-family: eurostile-condensed;
-  src: url(https://use.typekit.net/af/c3a867/00000000000000003b9b0e49/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("woff2"),
-    url(https://use.typekit.net/af/c3a867/00000000000000003b9b0e49/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("woff"),
-    url(https://use.typekit.net/af/c3a867/00000000000000003b9b0e49/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("opentype");
-  font-style: normal;
-  font-weight: 400;
-}
-@font-face {
-  font-family: acumin-pro;
-  src: url(https://use.typekit.net/af/aa5b59/00000000000000003b9acaf7/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3)
-      format("woff2"),
-    url(https://use.typekit.net/af/aa5b59/00000000000000003b9acaf7/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3)
-      format("woff"),
-    url(https://use.typekit.net/af/aa5b59/00000000000000003b9acaf7/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3)
-      format("opentype");
-  font-style: italic;
-  font-weight: 400;
-}
-@font-face {
-  font-family: acumin-pro;
-  src: url(https://use.typekit.net/af/46da36/00000000000000003b9acaf6/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("woff2"),
-    url(https://use.typekit.net/af/46da36/00000000000000003b9acaf6/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("woff"),
-    url(https://use.typekit.net/af/46da36/00000000000000003b9acaf6/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3)
-      format("opentype");
-  font-style: normal;
-  font-weight: 400;
-}
-@font-face {
-  font-family: acumin-pro;
-  src: url(https://use.typekit.net/af/027dd4/00000000000000003b9acafa/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3)
-      format("woff2"),
-    url(https://use.typekit.net/af/027dd4/00000000000000003b9acafa/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3)
-      format("woff"),
-    url(https://use.typekit.net/af/027dd4/00000000000000003b9acafa/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3)
-      format("opentype");
-  font-style: normal;
-  font-weight: 600;
 }
 .card--product .card__content .card__content__body .card__text p {
   line-height: 1.5;

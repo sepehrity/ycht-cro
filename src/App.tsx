@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useGetScriptsQuery, useLazyRenderImageQuery } from "./api";
 import styles from "./App.module.css";
 import { classNames } from "./utils";
-// import Carousel from "./compoFnents/Carousel";
 import { useImmer } from "use-immer";
 import Cruiser from "./images/Cruiser1.png";
 import Sailboat from "./images/Sailboat 1.png";
@@ -31,7 +30,7 @@ const COLORS: Record<string, string> = {
 };
 
 type LayerColorType = {
-  Codes: string;
+  Codes: ColorType;
   colorGroup: string;
 };
 
@@ -49,8 +48,8 @@ function App() {
   const [renderImage, { isFetching, data: renderedImage }] =
     useLazyRenderImageQuery();
 
-  const [scriptType, setScriptType] = useState<string>("Superyacht 1");
-  const [colorGroup, setColorGroup] = useState<string>("");
+  const [boatType, setBoatType] = useState<string>("Superyacht 1");
+  const [colorGroup, setColorGroup] = useState<string>("White");
   const [layer, setLayer] = useState<string>("");
   const [color, setColor] = useState<ColorType | undefined>();
   const [options, setOptions] = useImmer<Options>({});
@@ -60,14 +59,16 @@ function App() {
   const debouncedColorDescription = useDebounce(colorDescription, 500);
 
   const handleSelectBoat = useCallback(
-    (boat: string) => () => {
-      setHasImage(false);
-      setOptions({});
-      setLayer("");
-      setColorGroup("");
-      setScriptType(boat);
+    (selectedBoatType: string) => () => {
+      if (selectedBoatType !== boatType) {
+        setHasImage(false);
+        setOptions({});
+        setLayer("");
+        setColorGroup("White");
+        setBoatType(selectedBoatType);
+      }
     },
-    [setOptions]
+    [boatType, setOptions]
   );
 
   const handleSelectColorGroup = useCallback(
@@ -77,6 +78,13 @@ function App() {
     },
     []
   );
+
+  useEffect(() => {
+    const firstLayer: string = Object.keys(
+      scripts?.[boatType]?.Layers || {}
+    )?.[0];
+    setLayer(firstLayer);
+  }, [boatType, scripts]);
 
   const onChangeColorDescription = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,52 +97,76 @@ function App() {
     (color: ColorType) => () => {
       setColor(color);
       setOptions((draft) => {
-        draft[scriptType] = {
-          ...(draft[scriptType] || {}),
+        draft[boatType] = {
+          ...(draft[boatType] || {}),
           [layer]: {
-            Codes: color.AkzoCode,
+            Codes: color,
             colorGroup: colorGroup
           }
         };
       });
     },
-    [layer, scriptType, setOptions, colorGroup]
+    [layer, boatType, setOptions, colorGroup]
   );
 
   const handleSelectLayer = useCallback(
-    (layer: string) => () => {
-      setLayer(layer);
+    (selectedLayer: string) => () => {
+      if (layer !== selectedLayer) {
+        console.log({ options, boatType });
+        if (Object.keys(options).length > 0) {
+          const selectedOptions = options[boatType][selectedLayer];
+          if (selectedOptions?.Codes && selectedOptions?.colorGroup) {
+            setColorGroup(selectedOptions.colorGroup);
+            setColor(selectedOptions.Codes);
+          } else {
+            setColorGroup("White");
+            setColor(undefined);
+          }
+        }
+        setLayer(selectedLayer);
+      }
     },
-    []
+    [boatType, layer, options]
   );
 
   const isReady = useMemo(
-    () => scriptType && layer && colorGroup && color,
-    [color, colorGroup, layer, scriptType]
+    () =>
+      !!(
+        boatType &&
+        layer &&
+        colorGroup &&
+        color &&
+        Object.keys(options).length > 0
+      ),
+    [color, colorGroup, layer, boatType, options]
   );
 
+  const getImage = useCallback(async () => {
+    if (isReady) {
+      const payload: RenderImageRequest = {
+        Recipe: boatType,
+        Layers: Object.keys(options[boatType]).join(","),
+        Codes: Object.keys(options[boatType])
+          .map((i) => options[boatType][i].Codes.AkzoCode)
+          .join(","),
+        colorGroup: Object.keys(options[boatType])
+          .map((i) => options[boatType][i].colorGroup)
+          .join(",")
+      };
+      await renderImage(payload).unwrap();
+      setHasImage(true);
+    }
+  }, [boatType, isReady, options, renderImage]);
+
   useEffect(() => {
-    const getImage = async () => {
-      if (isReady) {
-        const payload: RenderImageRequest = {
-          Recipe: scriptType,
-          Layers: Object.keys(options[scriptType]).join(","),
-          Codes: Object.keys(options[scriptType])
-            .map((i) => options[scriptType][i].Codes)
-            .join(","),
-          colorGroup: Object.keys(options[scriptType])
-            .map((i) => options[scriptType][i].colorGroup)
-            .join(",")
-        };
-        await renderImage(payload).unwrap();
-        setHasImage(true);
-      }
-    };
     getImage();
-  }, [color, colorGroup, isReady, layer, options, renderImage, scriptType]);
+  }, [getImage]);
 
   return (
-    <div className="py-10 px-64 h-screen mb-6">
+    <div
+      className="pt-5 px-14 mx-64 h-full mb-6 bg-white flex justify-center flex-col"
+      style={{ width: "1300px" }}
+    >
       <h1 className="text-7xl text-center my-10 mb-16">FIND YOUR COLOR</h1>
       <div className="text-center mb-10">
         <h3 className="text-5xl mb-4">Choose your boat</h3>
@@ -143,12 +175,12 @@ function App() {
           eiusmod.
         </span>
       </div>
-      <div className="gap-5 flex justify-center">
+      <div className="gap-5 flex justify-center h-56">
         {Object.keys(scripts)
           ?.filter((boat) => !["E15 CR-8", "E15 B2"].includes(boat))
           .map((boat) => {
             const boatImage = images[boat];
-            const isActive = scriptType === boat;
+            const isActive = boatType === boat;
             return (
               <div
                 key={boat}
@@ -163,7 +195,7 @@ function App() {
                   onClick={handleSelectBoat(boat)}
                   className={classNames(
                     styles.scriptImage,
-                    "bg-blue-500 h-44 mb-4 transition object-contain",
+                    "bg-blue-500 h-44 w-64 mb-4 transition object-cover",
                     isActive ? "" : "opacity-80 hover:opacity-100"
                   )}
                 />
@@ -174,7 +206,7 @@ function App() {
       </div>
       <div className="flex justify-center content-center">
         <img
-          src={hasImage ? renderedImage : images[scriptType]}
+          src={hasImage ? renderedImage : images[boatType]}
           alt="boat"
           className={classNames(
             "w-auto mt-10 bg-gray-400 object-contain transition",
@@ -184,6 +216,26 @@ function App() {
         />
       </div>
       <h2 className="my-10 text-2xl text-center">Select your area and color</h2>
+      <div className="flex justify-center gap-28 h-7 mb-10">
+        {Object.keys(scripts?.[boatType]?.Layers || {})?.map((key) => {
+          const layerName = scripts?.[boatType]?.Layers[key];
+          const isActive = key === layer;
+          return (
+            <span
+              className={classNames(
+                "font-semibold text-lg cursor-pointer transition",
+                isActive
+                  ? "text-gray-900 rounded outline outline-gray-400 outline-offset-8"
+                  : "text-gray-500"
+              )}
+              key={key}
+              onClick={handleSelectLayer(key)}
+            >
+              {layerName}
+            </span>
+          );
+        })}
+      </div>
       <div className="mb-10 flex justify-between px-32">
         <div className="flex items-left flex-col justify-center flex-1">
           <div className="text-gray-600 font-medium">
@@ -215,27 +267,7 @@ function App() {
           />
         </div>
       </div>
-      <div className="flex justify-center gap-28">
-        {Object.keys(scripts?.[scriptType]?.Layers || {})?.map((key) => {
-          const layerName = scripts?.[scriptType]?.Layers[key];
-          const isActive = key === layer;
-          return (
-            <span
-              className={classNames(
-                "font-semibold text-lg cursor-pointer transition",
-                isActive
-                  ? "text-gray-900 rounded outline outline-gray-400 outline-offset-8"
-                  : "text-gray-500"
-              )}
-              key={key}
-              onClick={handleSelectLayer(key)}
-            >
-              {layerName}
-            </span>
-          );
-        })}
-      </div>
-      <div className="my-10 h-28 w-full flex justify-center gap-5">
+      <div className="my-10 h-24 w-full flex justify-center gap-5">
         {Object.keys(COLORS).map((colorName) => {
           const isActive = colorName === colorGroup;
           return (
@@ -245,21 +277,19 @@ function App() {
               onClick={handleSelectColorGroup(colorName)}
               className={classNames(
                 styles.colorBox,
-                "rounded w-28 h-28 rounded-br-2xl cursor-pointer border",
+                "rounded w-24 h-24 rounded-br-2xl cursor-pointer border",
                 isActive ? "outline outline-gray-400 outline-offset-4" : ""
               )}
             />
           );
         })}
       </div>
-      {colorGroup && layer && (
-        <ColorPickerSlider
-          colorDescription={debouncedColorDescription}
-          colorGroup={colorGroup}
-          onSelectColor={handleSelectColor}
-          selectedColor={color?.id}
-        />
-      )}
+      <ColorPickerSlider
+        colorDescription={debouncedColorDescription}
+        colorGroup={colorGroup}
+        onSelectColor={handleSelectColor}
+        selectedColor={color?.id}
+      />
       {/* {colorGroup && layer && (
         <Carousel items={colors} onClick={handleSelectColor} active={color} />
       )} */}

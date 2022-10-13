@@ -1,0 +1,30 @@
+.productTitleBackground {
+  background-color: #f5f5f5;
+}
+
+.blueText {
+  color: #265ba3;
+}
+
+.button {
+  background-color: #265ba3;
+  color: white;
+  height: 44px;
+  border-radius: 1px 1px 12px 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.outlineButton {
+  background-color: transparent;
+  border: 2px solid #265ba3;
+  color: #265ba3;
+  height: 44px;
+  border-radius: 1px 1px 12px 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}

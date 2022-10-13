@@ -9,6 +9,8 @@ const ProductCard = ({ description, title, image, link }: Props) => {
   return (
     <a
       href={link}
+      target="_blank"
+      rel="noreferrer"
       title={title}
       className="card card--product-category col-xs-12 col-lg-6"
     >
@@ -20,7 +22,7 @@ const ProductCard = ({ description, title, image, link }: Props) => {
           <h4 className="card__title">
             <div className="button link--chevron link--chevron-xl">
               <span>
-                <span className="button-label">Awlgrip Topcoat Spray</span>
+                <span className="button-label">{title}</span>
               </span>
               <span className="postfix-icon">
                 <svg className="icon icon-postfix icon--freeform icon--fill icon-chevron-right">
