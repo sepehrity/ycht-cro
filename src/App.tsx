@@ -170,10 +170,7 @@ function App() {
       <h1 className="text-7xl text-center my-10 mb-16">FIND YOUR COLOR</h1>
       <div className="text-center mb-10">
         <h3 className="text-5xl mb-4">Choose your boat</h3>
-        <span>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod.
-        </span>
+        <span>Pick your favorite colors schedule for your boat</span>
       </div>
       <div className="gap-5 flex justify-center h-56">
         {Object.keys(scripts)
