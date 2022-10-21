@@ -25,7 +25,6 @@
   },
   "scripts": {
     "cra-start": "react-scripts start",
-    "start": "parcel",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "clean": "rimraf ./dist",
     "test": "react-scripts test",
@@ -50,12 +49,22 @@
     ]
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "2.7.0",
+    "@rollup/plugin-babel": "^6.0.0",
+    "@rollup/plugin-commonjs": "^23.0.0",
+    "@rollup/plugin-image": "^3.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-replace": "^5.0.0",
+    "@rollup/plugin-url": "^8.0.0",
     "@types/react-slick": "^0.23.10",
     "autoprefixer": "^10.4.12",
-    "parcel": "^2.7.0",
     "postcss": "^8.4.17",
     "process": "^0.11.10",
+    "rollup": "^3.2.3",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^2.0.1",
+    "rollup-plugin-typescript2": "^0.34.1",
     "slick-carousel": "^1.8.1",
     "tailwindcss": "^3.1.8"
   }

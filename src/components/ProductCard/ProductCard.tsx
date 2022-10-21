@@ -2,10 +2,17 @@ type Props = {
   image: string;
   title: string;
   description: string;
+  customStyle?: React.CSSProperties;
   link: string;
 };
 
-const ProductCard = ({ description, title, image, link }: Props) => {
+const ProductCard = ({
+  description,
+  title,
+  image,
+  link,
+  customStyle
+}: Props) => {
   return (
     <a
       href={link}
@@ -16,7 +23,7 @@ const ProductCard = ({ description, title, image, link }: Props) => {
     >
       <div className="card__content">
         <figure className="image card__image">
-          <img src={image} alt={title} />
+          <img src={image} alt={title} style={customStyle} />
         </figure>
         <div className="card__content__body">
           <h4 className="card__title">

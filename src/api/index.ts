@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { ENV_VARIABLES } from "../config";
+import { ENV_VARIABLES } from "../env";
 import { baseQuery } from "../store/utils";
 import {
   GetColorsRequest,
@@ -36,7 +36,7 @@ export const boatApi = createApi({
           .fill("800000001")
           .join(",");
         return {
-          url: `/RenderImage?Recipe=${Recipe}&Layers=${Layers}&Codes=${Codes}&Instruments=${Instruments}&colorGroup=${colorGroup}&size=large`,
+          url: `/RenderImage?Recipe=${Recipe}&Layers=${Layers}&Codes=${Codes}&Instruments=${Instruments}&colorGroup=${colorGroup}&width=1172`,
           responseHandler: async (response) => {
             const imageBlob = await response.blob();
             return URL.createObjectURL(imageBlob);

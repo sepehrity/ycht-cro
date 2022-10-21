@@ -1,6 +1,6 @@
 import { FetchBaseQueryArgs } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ENV_VARIABLES } from "../../config";
+import { ENV_VARIABLES } from "../../env";
 
 export const prepareHeaders: FetchBaseQueryArgs["prepareHeaders"] = (
   headers
