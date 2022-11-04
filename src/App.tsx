@@ -1,22 +1,14 @@
-import "./App.css";
-import "./styles/products.css";
-
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useImmer } from "use-immer";
 import { useGetScriptsQuery, useLazyRenderImageQuery } from "./api";
 import { ColorType, RenderImageRequest } from "./api/@types";
+import "./App.css";
 import styles from "./App.module.css";
 import ColorPickerSlider from "./components/ColorPickerSlider";
-import { COLOR_GROUPS, MAP_SCRIPT_NAME, SCRIPT_IMAGES } from "./config";
-import useDebounce from "./hooks/useDebounce";
-import { classNames } from "./utils";
-
-type LayerColorType = {
-  Codes: ColorType;
-  colorGroup: string;
-};
-
-type Options = Record<string, Record<string, LayerColorType>>;
+import { MAP_SCRIPT_NAME, SCRIPT_IMAGES } from "./config";
+import { Options } from "./interfaces";
+import "./styles/products.css";
+import { classNames, formatBoatName } from "./utils";
 
 function App() {
   const { data: scripts = {} } = useGetScriptsQuery();
@@ -28,10 +20,7 @@ function App() {
   const [layer, setLayer] = useState<string>("");
   const [color, setColor] = useState<ColorType | undefined>();
   const [options, setOptions] = useImmer<Options>({});
-  const [colorDescription, setColorDescription] = useState<string>("");
   const [hasImage, setHasImage] = useState(false);
-
-  const debouncedColorDescription = useDebounce(colorDescription, 500);
 
   const handleSelectBoat = useCallback(
     (selectedBoatType: string) => () => {
@@ -60,13 +49,6 @@ function App() {
     )?.[0];
     setLayer(firstLayer);
   }, [boatType, scripts]);
-
-  const onChangeColorDescription = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setColorDescription(event.target.value);
-    },
-    []
-  );
 
   const handleSelectColor = useCallback(
     (color: ColorType) => () => {
@@ -103,16 +85,11 @@ function App() {
     [boatType, layer, options]
   );
 
+  const hasOptions = useMemo(() => Object.keys(options).length > 0, [options]);
+
   const isReady = useMemo(
-    () =>
-      !!(
-        boatType &&
-        layer &&
-        colorGroup &&
-        color &&
-        Object.keys(options).length > 0
-      ),
-    [color, colorGroup, layer, boatType, options]
+    () => !!(boatType && layer && colorGroup && color && hasOptions),
+    [boatType, layer, colorGroup, color, hasOptions]
   );
 
   const getImage = useCallback(async () => {
@@ -136,6 +113,43 @@ function App() {
     getImage();
   }, [getImage]);
 
+  const hasAntifouling = useMemo(
+    () => scripts?.[boatType]?.Layers[layer] === "Anti_fouling",
+    [boatType, layer, scripts]
+  );
+
+  const isReadyToExport = useMemo(
+    () => !!(hasOptions && renderedImage),
+    [hasOptions, renderedImage]
+  );
+
+  // if (isReadyToExport && window.location.href.includes("/export")) {
+  //   return (
+  //     <div
+  //       className="pt-5 px-16 mx-64 h-full mb-6 bg-white flex justify-center flex-col"
+  //       style={{ width: "auto" }}
+  //     >
+  //       <div className="text-center my-10">
+  //         <h3 className="text-5xl mb-8">FIND YOUR COLOR</h3>
+  //         <p className="text-base mb-8 break-words overflow-auto">
+  //           Selecting the perfect color for your boat can be a daunting task.
+  //           Let us make it easier and help you find the right Awlgrip color for
+  //           you.
+  //         </p>
+  //         <p className="text-lg font-semibold">
+  //           Click on the image that closely matches your boat
+  //         </p>
+  //       </div>
+  //       <ExportPage
+  //         options={options}
+  //         renderedImage={renderedImage as string}
+  //         layerNames={scripts?.[boatType]?.Layers}
+  //         hasAntifouling={hasAntifouling}
+  //       />
+  //     </div>
+  //   );
+  // }
+
   return (
     <div
       className="pt-5 px-16 mx-64 h-full mb-6 bg-white flex justify-center flex-col"
@@ -153,7 +167,15 @@ function App() {
       </div>
       <div className="gap-12 flex justify-center h-56">
         {Object.keys(scripts)
-          ?.filter((boat) => !["E15 CR-8", "E15 B2"].includes(boat))
+          ?.filter(
+            (boat) =>
+              ![
+                "E15 CR-8",
+                "E15 B2",
+                "WarehouseWall",
+                "Industrial Building"
+              ].includes(boat)
+          )
           .map((boat) => {
             const boatImage = SCRIPT_IMAGES[boat];
             const isActive = boatType === boat;
@@ -176,7 +198,7 @@ function App() {
                   )}
                 />
                 <span className="font-semibold text-lg">
-                  {boat.replace("1", "")}
+                  {formatBoatName(boat)}
                 </span>
               </div>
             );
@@ -196,7 +218,7 @@ function App() {
         Select the area you want to paint and the color group you would like to
         explore.
       </h2>
-      <div className="flex justify-center gap-28 h-9 mb-10">
+      <div className="flex justify-center gap-28 h-9 mb-6">
         {Object.keys(scripts?.[boatType]?.Layers || {})?.map((key) => {
           const layerName = scripts?.[boatType]?.Layers[key];
           const isActive = key === layer;
@@ -216,77 +238,16 @@ function App() {
           );
         })}
       </div>
-      <div
-        className={classNames(
-          "flex justify-between",
-          layer === "Anti_fouling"
-            ? "opacity-50 pointer-events-none"
-            : "opacity-100"
-        )}
-      >
-        <div className="flex items-left flex-col justify-center flex-1">
-          <div className="text-gray-600 font-medium">
-            Color Description: {color?.Descriptions}
-          </div>
-          <div className="text-gray-600 font-medium">
-            Sales Code: {color?.AkzoCode}
-          </div>
-        </div>
-        <div className="flex relative flex-1">
-          <svg
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            className="w-6 h-6 absolute left-2 top-4 text-gray-400"
-          >
-            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-          </svg>
-          <input
-            className={classNames(
-              "shadow appearance-none border rounded w-full py-4 pl-10 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            )}
-            id="colorDescription"
-            disabled={layer === "Anti_fouling"}
-            value={colorDescription}
-            type="text"
-            onChange={onChangeColorDescription}
-            placeholder="Search Color by description or sales code"
-          />
-        </div>
-      </div>
-      <div
-        className={classNames(
-          "mt-10 mb-8 h-20 w-full flex justify-center gap-5 transition",
-          scripts?.[boatType]?.Layers[layer] === "Anti_fouling"
-            ? "opacity-50 pointer-events-none"
-            : "opacity-100"
-        )}
-      >
-        {Object.keys(COLOR_GROUPS).map((colorName) => {
-          const isActive = colorName === colorGroup;
-          return (
-            <div
-              key={colorName}
-              style={{ backgroundColor: COLOR_GROUPS[colorName] }}
-              onClick={handleSelectColorGroup(colorName)}
-              className={classNames(
-                styles.colorBox,
-                "rounded w-20 h-20 rounded-br-2xl cursor-pointer border",
-                isActive ? "outline outline-gray-400 outline-offset-4" : ""
-              )}
-            />
-          );
-        })}
-      </div>
       <ColorPickerSlider
-        colorDescription={debouncedColorDescription}
+        onChangeColorGroup={handleSelectColorGroup}
         colorGroup={colorGroup}
-        layer={scripts?.[boatType]?.Layers[layer]}
+        hasAntifouling={hasAntifouling}
         onSelectColor={handleSelectColor}
-        selectedColor={color?.id}
+        selectedColor={color}
+        isReadyToExport={isReadyToExport}
+        layerNames={scripts?.[boatType]?.Layers}
+        options={options}
+        renderedImage={renderedImage}
       />
     </div>
   );

@@ -6,24 +6,26 @@ export const AntiFouling_ProductImages: Record<string, ProductImage> = {
   "Fouling Control": {
     image: internationalInterlux,
     link: "https://www.international-yachtpaint.com",
-    description: "International",
+    description:
+      "Paint your boat with Interlux & International for relentless performance and trusted by professionals and Do It Yourself boaters for both above and below protection for all boats.",
     customStyle: { width: "450px", paddingTop: "105px", height: "auto" }
   },
   "Sea Hawk": {
     image: SeaHawk,
     link: "https://www.seahawkpaints.com",
-    description: "SeaHawk"
+    description:
+      "Boating with confidence and maximum performance - even when conditions are rough? Sea Hawk has the joy of boating covered."
   }
 };
 
-export const AntiFouling_ProductNames = ["Sea Hawk", "Fouling Control"];
+export const AntiFouling_ProductNames = ["Fouling Control", "Sea Hawk"];
 
 export const AntiFouling_Colors = [
   {
     id: "RAL5013",
     AkzoCode: "RAL5013",
     ProductLines: ["Fouling Control"],
-    Descriptions: "Dark Blue",
+    Descriptions: ["Dark Blue"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=89742667-2eb5-e311-b816-005056945ff1&imagesize=Small"
   },
@@ -31,14 +33,14 @@ export const AntiFouling_Colors = [
     id: "RAL5019",
     AkzoCode: "RAL5019",
     ProductLines: ["Sea Hawk"],
-    Descriptions: "Blue",
+    Descriptions: ["Blue"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=8e742667-2eb5-e311-b816-005056945ff1&imagesize=Small"
   },
   {
     id: "RAL3011",
     AkzoCode: "RAL3011",
-    Description: "Red",
+    Description: ["Red"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=c1932761-2eb5-e311-b816-005056945ff1&imagesize=Small"
   },
@@ -46,7 +48,7 @@ export const AntiFouling_Colors = [
     id: "RAL7036",
     AkzoCode: "RAL7036",
     ProductLines: [],
-    Descriptions: "Grey White",
+    Descriptions: ["Grey White"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=6e5c306d-2eb5-e311-b816-005056945ff1&imagesize=Small"
   },
@@ -54,7 +56,7 @@ export const AntiFouling_Colors = [
     id: "RAL8022",
     AkzoCode: "RAL8022",
     ProductLines: [],
-    Descriptions: "Black",
+    Descriptions: ["Black"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=835c306d-2eb5-e311-b816-005056945ff1&imagesize=Small"
   },
@@ -62,7 +64,7 @@ export const AntiFouling_Colors = [
     id: "RAL6000",
     AkzoCode: "RAL6000",
     ProductLines: [],
-    Descriptions: "Green",
+    Descriptions: ["Green"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=92742667-2eb5-e311-b816-005056945ff1&imagesize=Small"
   },
@@ -70,7 +72,7 @@ export const AntiFouling_Colors = [
     id: "RAL7015",
     AkzoCode: "RAL7015",
     ProductLines: [],
-    Descriptions: "Shark White",
+    Descriptions: ["Shark White"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=bd742667-2eb5-e311-b816-005056945ff1&imagesize=Small"
   },
@@ -78,7 +80,7 @@ export const AntiFouling_Colors = [
     id: "RAL9003",
     AkzoCode: "RAL9003",
     ProductLines: [],
-    Descriptions: "White",
+    Descriptions: ["White"],
     CoDImageURL:
       "https://colorondisplayapiprd.azureedge.net/api/imagebymarketcolor?marketcolorid=8a5c306d-2eb5-e311-b816-005056945ff1&imagesize=Small"
   }
