@@ -88,20 +88,23 @@ const ColorPickerSlider = ({
     [colorsLength]
   );
 
-  const productNames = useMemo(() => extractProductLines(colors), [colors]);
-
-  const onLazyLoad = useCallback((slidesToLoad: number[]) => {}, []);
-
-  const onChange = useCallback(
-    (currentSlide: number) => {
-      if (currentSlide === colorsLength - (settings?.slidesToShow || 0)) {
-      }
-    },
-    [colorsLength, settings?.slidesToShow]
+  const productNames = useMemo(
+    () => extractProductLines(colors, selectedColor?.AkzoCode),
+    [colors, selectedColor?.AkzoCode]
   );
 
+  // const onLazyLoad = useCallback((slidesToLoad: number[]) => {}, []);
+
+  // const onChange = useCallback(
+  //   (currentSlide: number) => {
+  //     if (currentSlide === colorsLength - (settings?.slidesToShow || 0)) {
+  //     }
+  //   },
+  //   [colorsLength, settings?.slidesToShow]
+  // );
+
   const noColorsFound = useMemo(
-    () => !isLoading && !colorsLength,
+    () => !isLoading && typeof colorsLength === "undefined",
     [colorsLength, isLoading]
   );
 
@@ -179,12 +182,7 @@ const ColorPickerSlider = ({
           isFetching ? "opacity-60" : "opacity-100"
         )}
       >
-        <Slider
-          {...settings}
-          onLazyLoad={onLazyLoad}
-          afterChange={onChange}
-          className="w-full mb-12 h-52 transition"
-        >
+        <Slider {...settings} className="w-full mb-12 h-52 transition">
           {!isLoading &&
             (hasAntifouling ? AntiFouling_Colors : colors)?.map((color) => {
               const colorTitle = `Color: ${color?.Descriptions?.[0]}\nSales Code: ${color.AkzoCode}`;

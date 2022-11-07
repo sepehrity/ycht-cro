@@ -33,9 +33,10 @@ export const SCRIPT_IMAGES: Record<string, string> = {
 export const MAP_SCRIPT_NAME: Record<string, string> = {
   "Super structure": "Superstructure",
   Hull: "Hull",
-  WaterBootStripe: "Boot Stripe",
-  BootStripe: "Boot Stripe",
-  Anti_fouling: "Antifouling"
+  WaterBootStripe: "Bootstripe",
+  BootStripe: "Bootstripe",
+  Anti_fouling: "Antifouling",
+  "Anti-fouling": "Antifouling"
 };
 
 export const Product_Images: Record<string, ProductImage> = {

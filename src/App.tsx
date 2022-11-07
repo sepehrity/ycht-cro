@@ -114,7 +114,10 @@ function App() {
   }, [getImage]);
 
   const hasAntifouling = useMemo(
-    () => scripts?.[boatType]?.Layers[layer] === "Anti_fouling",
+    () =>
+      ["Anti_fouling", "Anti-fouling"].includes(
+        scripts?.[boatType]?.Layers[layer]
+      ),
     [boatType, layer, scripts]
   );
 
